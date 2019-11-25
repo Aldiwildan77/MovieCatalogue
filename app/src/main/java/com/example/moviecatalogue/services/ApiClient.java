@@ -27,13 +27,14 @@ public class ApiClient {
 
     private final String MOVIE_API = BuildConfig.MOVIE_API;
     private List<Movie> movieList;
+    private Movie mv;
 
     public ApiClient(Context context) {
         AndroidNetworking.initialize(context);
         movieList = new ArrayList<>();
     }
 
-    public List<Movie> getMovieList(){
+    public List<Movie> getMovieList() {
         return movieList;
     }
 
@@ -72,7 +73,7 @@ public class ApiClient {
                                 System.out.println("movie id : " + movie.getId());
                                 movieList.add(movie);
                             }
-                        } catch (JSONException e){
+                        } catch (JSONException e) {
                             Log.d(TAG, "onResponse: " + e);
                         }
                     }
@@ -84,11 +85,45 @@ public class ApiClient {
                 });
     }
 
-    public void getMovieById(String id) {
+    public Movie getMovieById(String id) {
+        AndroidNetworking.get("https://api.themoviedb.org/3/movie/" + id)
+                .addQueryParameter("api_key", MOVIE_API)
+                .addQueryParameter("language", "id")
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray genres = response.getJSONArray("genres");
+                            int[] genres_ids = new int[genres.length()];
 
+                            for (int i = 0; i < genres.length(); i++) {
+                                genres_ids[i] = genres.getJSONObject(i).getInt("id");
+                            }
+
+                            mv = new Movie(
+                                    response.getString("id"),
+                                    response.getString("original_title"),
+                                    response.getString("overview"),
+                                    response.getString("poster_path"),
+                                    response.getString("release_date"),
+                                    response.getDouble("vote_average"),
+                                    genres_ids
+                            );
+                        } catch (JSONException e) {
+                            Log.d(TAG, "onResponse: " + e);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                    }
+                });
+        return mv;
     }
 
-    public void getMovieGenres(String id){
+    public void getMovieGenres(String id) {
 
     }
 
