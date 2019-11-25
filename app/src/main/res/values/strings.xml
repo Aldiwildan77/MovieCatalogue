@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MovieCatalogue</string>
+    <string name="search_text_hint">Click search icon to start</string>
 </resources>

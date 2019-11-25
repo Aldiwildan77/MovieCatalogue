@@ -1,15 +1,15 @@
 package com.example.moviecatalogue.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
-import com.androidnetworking.interfaces.OkHttpResponseListener;
 import com.example.moviecatalogue.BuildConfig;
+import com.example.moviecatalogue.interfaces.MovieRequest;
 import com.example.moviecatalogue.models.Movie;
 
 import org.json.JSONArray;
@@ -17,30 +17,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Response;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class ApiClient {
 
+    private final String TAG = "MYAPP";
     private final String MOVIE_API = BuildConfig.MOVIE_API;
-    private List<Movie> movieList;
+    private ArrayList<Movie> movieList;
     private Movie mv;
+    private Activity activity;
 
     public ApiClient(Context context) {
         AndroidNetworking.initialize(context);
         movieList = new ArrayList<>();
+        activity = (Activity) context;
     }
 
-    public List<Movie> getMovieList() {
-        return movieList;
-    }
-
-    public void getMovie() {
-        System.out.println("get movie");
-        AndroidNetworking.get("https://api.themoviedb.org/3/movie/now_playing")
+    public void getMovies(final MovieRequest.OnMovieRequestCompleteListener listener) {
+        Log.d(TAG, "GET MOVIE");
+        AndroidNetworking.get("https://api.themoviedb.org/3/movie/popular")
                 .addQueryParameter("api_key", MOVIE_API)
                 .addQueryParameter("language", "id")
                 .addQueryParameter("page", "1")
@@ -70,9 +64,17 @@ public class ApiClient {
                                         data.getDouble("vote_average"),
                                         genre_ids
                                 );
-                                System.out.println("movie id : " + movie.getId());
+                                Log.d(TAG, "movie id : " + movie.getId());
                                 movieList.add(movie);
                             }
+
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.onMovieRequestComplete(movieList);
+                                }
+                            });
+
                         } catch (JSONException e) {
                             Log.d(TAG, "onResponse: " + e);
                         }

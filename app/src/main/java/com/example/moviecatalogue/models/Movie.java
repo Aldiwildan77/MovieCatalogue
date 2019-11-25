@@ -1,7 +1,5 @@
 package com.example.moviecatalogue.models;
 
-import java.util.Date;
-
 public class Movie {
 
     private String id;
@@ -12,8 +10,6 @@ public class Movie {
     private double vote_average;
     private int[] genre_ids;
 
-    public Movie() {}
-
     public Movie(String id, String original_title, String overview, String poster_path, String release_date, double vote_average, int[] genre_ids) {
         this.id = id;
         this.original_title = original_title;
@@ -22,6 +18,15 @@ public class Movie {
         this.release_date = release_date;
         this.vote_average = vote_average;
         this.genre_ids = genre_ids;
+    }
+
+    @Override
+    public String toString(){
+        return "TITLE : " + original_title;
+    }
+
+    public String getPosterImageUrl(){
+        return "https://image.tmdb.org/t/p/w342" + poster_path;
     }
 
     public String getId() {
