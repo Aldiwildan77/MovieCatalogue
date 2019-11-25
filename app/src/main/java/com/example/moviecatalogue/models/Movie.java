@@ -1,58 +1,82 @@
 package com.example.moviecatalogue.models;
 
+import java.util.Date;
+
 public class Movie {
 
-    private String title, description, imgUrl;
-    private double rating;
-    private String[] genres;
+    private String id;
+    private String original_title;
+    private String overview;
+    private String poster_path;
+    private String release_date;
+    private double vote_average;
+    private int[] genre_ids;
 
-    public Movie(){}
+    public Movie() {}
 
-    public Movie(String title, String description, String imgUrl, double rating, String[] genres) {
-        this.title = title;
-        this.description = description;
-        this.imgUrl = imgUrl;
-        this.rating = rating;
-        this.genres = genres;
+    public Movie(String id, String original_title, String overview, String poster_path, String release_date, double vote_average, int[] genre_ids) {
+        this.id = id;
+        this.original_title = original_title;
+        this.overview = overview;
+        this.poster_path = poster_path;
+        this.release_date = release_date;
+        this.vote_average = vote_average;
+        this.genre_ids = genre_ids;
     }
 
-    public String getTitle() {
-        return title;
+    public String getId() {
+        return id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getOriginal_title() {
+        return original_title;
+    }
+
+    public void setOriginal_title(String original_title) {
+        this.original_title = original_title;
     }
 
     public String getDescription() {
-        return description;
+        return overview;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescription(String overview) {
+        this.overview = overview;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getPoster_path() {
+        return poster_path;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
-    public double getRating() {
-        return rating;
+    public String getRelease_date() {
+        return release_date;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
-    public String[] getGenres() {
-        return genres;
+    public double getVote_average() {
+        return vote_average;
     }
 
-    public void setGenres(String[] genres) {
-        this.genres = genres;
+    public void setVote_average(double vote_average) {
+        this.vote_average = vote_average;
+    }
+
+    public int[] getGenre_ids() {
+        return genre_ids;
+    }
+
+    public void setGenre_ids(int[] genre_ids) {
+        this.genre_ids = genre_ids;
     }
 }
