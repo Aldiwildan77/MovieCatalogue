@@ -42,4 +42,6 @@ dependencies {
     implementation "androidx.cardview:cardview:$version_cardview"
     implementation "com.google.android.material:material:$version_material"
     implementation "com.squareup.picasso:picasso:$version_picasso"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }
