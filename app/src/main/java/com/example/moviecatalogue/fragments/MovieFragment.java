@@ -2,17 +2,16 @@ package com.example.moviecatalogue.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import com.example.moviecatalogue.R;
 import com.example.moviecatalogue.activities.DetailActivity;
@@ -25,11 +24,20 @@ import java.util.ArrayList;
 
 public class MovieFragment extends Fragment {
 
+    private ArrayList<Movie> movieList;
     private MovieAdapter adapter;
     private RecyclerView recyclerView;
     private SearchView searchView;
     private ProgressBar progressCircular;
-
+    OnMovieRequestCompleteListener listener = new OnMovieRequestCompleteListener() {
+        @Override
+        public void onMovieRequestComplete(ArrayList<Movie> list) {
+            // Toast.makeText(getApplicationContext(), Arrays.toString(movieList.toArray()), Toast.LENGTH_LONG).show();
+            adapter.setMovieList(list);
+            progressCircular.setVisibility(View.GONE);
+            adapter.notifyDataSetChanged();
+        }
+    };
     private ApiClient apiClient;
 
     public MovieFragment() {
@@ -56,6 +64,7 @@ public class MovieFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         init();
+
         adapter.setOnItemClickCallback(new MovieAdapter.OnItemClickCallback() {
             @Override
             public void onItemClicked(Movie movie) {
@@ -83,17 +92,7 @@ public class MovieFragment extends Fragment {
         });
     }
 
-    OnMovieRequestCompleteListener listener = new OnMovieRequestCompleteListener() {
-        @Override
-        public void onMovieRequestComplete(ArrayList<Movie> list) {
-            // Toast.makeText(getApplicationContext(), Arrays.toString(movieList.toArray()), Toast.LENGTH_LONG).show();
-            adapter.setMovieList(list);
-            progressCircular.setVisibility(View.GONE);
-            adapter.notifyDataSetChanged();
-        }
-    };
-
-    private void init(){
+    private void init() {
 
         apiClient.getMovies(listener);
 
