@@ -26,6 +26,9 @@ public class ApiClient {
     private Movie mv;
     private Activity activity;
 
+    public ApiClient() {
+    }
+
     public ApiClient(Context context) {
         AndroidNetworking.initialize(context);
         movieList = new ArrayList<>();
@@ -112,6 +115,7 @@ public class ApiClient {
                                     response.getDouble("vote_average"),
                                     genres_ids
                             );
+
                         } catch (JSONException e) {
                             Log.d(TAG, "onResponse: " + e);
                         }

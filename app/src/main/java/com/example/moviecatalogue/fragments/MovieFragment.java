@@ -1,32 +1,81 @@
 package com.example.moviecatalogue.fragments;
 
-
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.moviecatalogue.R;
+import com.example.moviecatalogue.activities.DetailActivity;
+import com.example.moviecatalogue.activities.MainActivity;
+import com.example.moviecatalogue.adapters.MovieAdapter;
+import com.example.moviecatalogue.interfaces.MovieRequest;
+import com.example.moviecatalogue.models.Movie;
+import com.example.moviecatalogue.services.ApiClient;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import java.util.ArrayList;
+
 public class MovieFragment extends Fragment {
 
+    private ArrayList<Movie> movieList;
+    private MovieAdapter adapter;
+    private RecyclerView recyclerView;
+
+    private ProgressBar progressCircular;
 
     public MovieFragment() {
-        // Required empty public constructor
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_movie, container, false);
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie, container, false);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        progressCircular = getActivity().findViewById(R.id.progress_circular);
+
+        movieList = new ArrayList<>();
+        adapter = new MovieAdapter(getActivity().getApplicationContext(), movieList);
+
+        recyclerView = getActivity().findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+        init();
+
+        adapter.setOnItemClickCallback(new MovieAdapter.OnItemClickCallback() {
+            @Override
+            public void onItemClicked(Movie movie) {
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra(DetailActivity.getExtraMovie(), movie);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void init(){
+
+        MovieRequest.OnMovieRequestCompleteListener listener = new MovieRequest.OnMovieRequestCompleteListener() {
+            @Override
+            public void onMovieRequestComplete(ArrayList<Movie> movieList) {
+                // Toast.makeText(getApplicationContext(), Arrays.toString(movieList.toArray()), Toast.LENGTH_LONG).show();
+                progressCircular.setVisibility(View.GONE);
+                adapter.setMovieList(movieList);
+                adapter.notifyDataSetChanged();
+            }
+        };
+
+        new ApiClient(getContext()).getMovies(listener);
     }
 
 }

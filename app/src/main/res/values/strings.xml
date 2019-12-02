@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">MovieCatalogue</string>
     <string name="search_text_hint">Click search icon to start</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_title_label">Judul</string>
+    <string name="tv_title">Spiderman</string>
+    <string name="tv_description_label">Deskripsi</string>
+    <string name="tv_description">Spiderman adalah superhero ..</string>
+    <string name="tv_rating_label">Penilaian</string>
+    <string name="tv_rating">4.3</string>
+    <string name="tv_release_label">Tanggal Rilis</string>
+    <string name="tv_release">24/07/2018</string>
+    <string name="image_container">Image Container</string>
+    <string name="sw_reminder">Reminder</string>
+    <string name="ic_setting">Setting</string>
+
 </resources>

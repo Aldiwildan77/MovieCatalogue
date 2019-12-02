@@ -1,6 +1,9 @@
 package com.example.moviecatalogue.models;
 
-public class Movie {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Movie implements Parcelable {
 
     private String id;
     private String original_title;
@@ -9,6 +12,13 @@ public class Movie {
     private String release_date;
     private double vote_average;
     private int[] genre_ids;
+
+    private final String POSTER_LINK = "https://image.tmdb.org/t/p/w342";
+    private final String TITLE_PREFIX = "TITLE : ";
+
+    public Movie() {
+    }
+
 
     public Movie(String id, String original_title, String overview, String poster_path, String release_date, double vote_average, int[] genre_ids) {
         this.id = id;
@@ -21,12 +31,12 @@ public class Movie {
     }
 
     @Override
-    public String toString(){
-        return "TITLE : " + original_title;
+    public String toString() {
+        return TITLE_PREFIX + original_title;
     }
 
-    public String getPosterImageUrl(){
-        return "https://image.tmdb.org/t/p/w342" + poster_path;
+    public String getPosterImageUrl() {
+        return POSTER_LINK + poster_path;
     }
 
     public String getId() {
@@ -84,4 +94,42 @@ public class Movie {
     public void setGenre_ids(int[] genre_ids) {
         this.genre_ids = genre_ids;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.original_title);
+        dest.writeString(this.overview);
+        dest.writeString(this.poster_path);
+        dest.writeString(this.release_date);
+        dest.writeDouble(this.vote_average);
+        dest.writeIntArray(this.genre_ids);
+    }
+
+    protected Movie(Parcel in) {
+        this.id = in.readString();
+        this.original_title = in.readString();
+        this.overview = in.readString();
+        this.poster_path = in.readString();
+        this.release_date = in.readString();
+        this.vote_average = in.readDouble();
+        this.genre_ids = in.createIntArray();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

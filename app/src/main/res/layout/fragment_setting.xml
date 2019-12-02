@@ -3,12 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingFragment">
+    android:paddingStart="@dimen/horizontal_dimens"
+    android:paddingEnd="@dimen/horizontal_dimens"
+    android:paddingTop="@dimen/horizontal_dimens"
+    tools:context=".fragments.SettingFragment"
+    android:background="@android:color/white">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Switch
+        android:id="@+id/sw_reminder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="@string/sw_reminder"
+        android:textSize="24sp" />
 
 </FrameLayout>
