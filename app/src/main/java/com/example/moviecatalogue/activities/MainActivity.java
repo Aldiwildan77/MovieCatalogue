@@ -1,29 +1,27 @@
 package com.example.moviecatalogue.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviecatalogue.R;
-import com.example.moviecatalogue.adapters.MovieAdapter;
 import com.example.moviecatalogue.fragments.MovieFragment;
 import com.example.moviecatalogue.fragments.SettingFragment;
-import com.example.moviecatalogue.interfaces.MovieRequest;
-import com.example.moviecatalogue.models.Movie;
-import com.example.moviecatalogue.services.ApiClient;
+import com.example.moviecatalogue.services.NotificationReceiver;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,10 +29,17 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction fragmentTransaction;
     FragmentTransaction settingFragmentTransaction;
 
+    SharedPreferences mPrefences;
+    boolean isReminderOn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPrefences = getSharedPreferences(getApplication().toString(), MODE_PRIVATE);
+        isReminderOn = mPrefences.getBoolean(SettingFragment.getKeyReminder(), SettingFragment.isDefaultReminder());
+        if (isReminderOn) setupNotification();
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
@@ -42,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         MovieFragment movieFragment = new MovieFragment();
         fragmentTransaction.replace(R.id.frame_test, movieFragment);
         fragmentTransaction.commit();
-
     }
 
     @Override
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menu_item_setting){
+        if (item.getItemId() == R.id.menu_item_setting) {
             settingFragmentTransaction = fragmentManager.beginTransaction();
             SettingFragment settingFragment = new SettingFragment();
 
@@ -67,4 +71,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setupNotification() {
+        Intent notificationIntent = new Intent(this, NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar updateTime = Calendar.getInstance();
+        updateTime.setTimeInMillis(System.currentTimeMillis());
+        updateTime.set(Calendar.HOUR_OF_DAY, 7);
+        updateTime.set(Calendar.MINUTE, 0);
+
+        int offset = updateTime.getTimeZone().getOffset(updateTime.getTimeInMillis());
+        long futureInMillis = updateTime.getTimeInMillis() + offset;
+        System.out.println(futureInMillis + " " + updateTime.getTimeInMillis());
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, futureInMillis, AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
 }
