@@ -1,35 +1,26 @@
 package com.example.moviecatalogue.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviecatalogue.R;
-import com.example.moviecatalogue.adapters.MovieAdapter;
 import com.example.moviecatalogue.fragments.MovieFragment;
 import com.example.moviecatalogue.fragments.SettingFragment;
-import com.example.moviecatalogue.interfaces.MovieRequest;
-import com.example.moviecatalogue.models.Movie;
-import com.example.moviecatalogue.services.ApiClient;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     FragmentTransaction settingFragmentTransaction;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -66,5 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
