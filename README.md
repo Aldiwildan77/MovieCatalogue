@@ -9,4 +9,4 @@ Projek Akhir Pemrograman Aplikasi Perangkat Bergerak (PAPB)
   * [ ] request data ke internet dibuat kelihatan kodingannya pake background Thread.
   * [X] container utk list film pakai fragment
   * [X] detail film pakai pakai activity
-  * [ ] ada fitur searching film berdasarkan kategori (popular/now_playing/...)
+  * [X] ada fitur searching film berdasarkan kategori (popular/now_playing/...)
