@@ -33,6 +33,7 @@ dependencies {
     def version_cardview = "1.0.0"
     def version_material = "1.0.0"
     def version_picasso = "2.5.2"
+    def version_async_http = "1.4.9"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:$version_appcompat"
@@ -42,4 +43,5 @@ dependencies {
     implementation "androidx.cardview:cardview:$version_cardview"
     implementation "com.google.android.material:material:$version_material"
     implementation "com.squareup.picasso:picasso:$version_picasso"
+    implementation "com.loopj.android:android-async-http:$version_async_http"
 }

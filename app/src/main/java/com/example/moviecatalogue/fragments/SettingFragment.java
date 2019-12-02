@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.moviecatalogue.R;
+import com.example.moviecatalogue.services.NotificationReceiver;
 
 import java.util.Objects;
 
@@ -39,6 +40,8 @@ public class SettingFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        final NotificationReceiver notificationReceiver = new NotificationReceiver();
+
         getActivity().setTitle(ACTIVITY_TITLE);
 
         reminder = Objects.requireNonNull(getActivity()).findViewById(R.id.sw_reminder);
@@ -53,6 +56,8 @@ public class SettingFragment extends Fragment {
                 preferencesEditor.apply();
 
                 reminder.setChecked(isChecked);
+
+                notificationReceiver.setRepeatingAlarmRelease(getActivity(), isChecked);
             }
         });
     }
