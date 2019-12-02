@@ -9,7 +9,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.moviecatalogue.BuildConfig;
-import com.example.moviecatalogue.interfaces.MovieRequest;
+import com.example.moviecatalogue.interfaces.OnMovieRequestCompleteListener;
 import com.example.moviecatalogue.models.Movie;
 
 import org.json.JSONArray;
@@ -35,7 +35,7 @@ public class ApiClient {
         activity = (Activity) context;
     }
 
-    public void getMovies(final MovieRequest.OnMovieRequestCompleteListener listener) {
+    public void getMovies(final OnMovieRequestCompleteListener listener) {
         Log.d(TAG, "GET MOVIE");
         AndroidNetworking.get("https://api.themoviedb.org/3/movie/popular")
                 .addQueryParameter("api_key", MOVIE_API)

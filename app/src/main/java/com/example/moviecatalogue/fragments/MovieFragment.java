@@ -15,9 +15,8 @@ import android.widget.ProgressBar;
 
 import com.example.moviecatalogue.R;
 import com.example.moviecatalogue.activities.DetailActivity;
-import com.example.moviecatalogue.activities.MainActivity;
 import com.example.moviecatalogue.adapters.MovieAdapter;
-import com.example.moviecatalogue.interfaces.MovieRequest;
+import com.example.moviecatalogue.interfaces.OnMovieRequestCompleteListener;
 import com.example.moviecatalogue.models.Movie;
 import com.example.moviecatalogue.services.ApiClient;
 
@@ -65,7 +64,7 @@ public class MovieFragment extends Fragment {
 
     private void init(){
 
-        MovieRequest.OnMovieRequestCompleteListener listener = new MovieRequest.OnMovieRequestCompleteListener() {
+        OnMovieRequestCompleteListener listener = new OnMovieRequestCompleteListener() {
             @Override
             public void onMovieRequestComplete(ArrayList<Movie> movieList) {
                 // Toast.makeText(getApplicationContext(), Arrays.toString(movieList.toArray()), Toast.LENGTH_LONG).show();
