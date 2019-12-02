@@ -35,6 +35,89 @@ public class ApiClient {
         activity = (Activity) context;
     }
 
+    public void searchMovie(final OnMovieRequestCompleteListener listener, String query) {
+        Log.d(TAG, "GET MOVIE");
+        AndroidNetworking.get("https://api.themoviedb.org/3/search/movie")
+                .addQueryParameter("api_key", MOVIE_API)
+                .addQueryParameter("language", "id")
+                .addQueryParameter("query", query)
+                .setPriority(Priority.LOW)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray results = response.getJSONArray("results");
+                            for (int i = 0; i < results.length(); i++) {
+                                JSONObject data = results.getJSONObject(i);
+
+                                JSONArray genres = data.getJSONArray("genre_ids");
+                                int[] genre_ids = new int[genres.length()];
+
+                                for (int j = 0; j < genres.length(); j++) {
+                                    genre_ids[j] = genres.getInt(j);
+                                }
+
+                                double vote_average = 0.0;
+                                String id, original_title, overview, poster_path, release_date;
+                                id = original_title = overview = poster_path = release_date = "";
+
+                                if (data.has("id")) {
+                                    id = data.getString("id");
+                                }
+
+                                if (data.has("original_title")) {
+                                    original_title = data.getString("original_title");
+                                }
+
+                                if (data.has("overview")) {
+                                    overview = data.getString("overview");
+                                }
+
+                                if (data.has("poster_path")) {
+                                    poster_path = data.getString("poster_path");
+                                }
+
+                                if (data.has("release_date")) {
+                                    release_date = data.getString("release_date");
+                                }
+
+                                if (data.has("vote_average")) {
+                                    vote_average = data.getDouble("vote_average");
+                                }
+
+                                Movie movie = new Movie(
+                                        id,
+                                        original_title,
+                                        overview,
+                                        poster_path,
+                                        release_date,
+                                        vote_average,
+                                        genre_ids
+                                );
+
+                                movieList.add(movie);
+                            }
+
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.onMovieRequestComplete(movieList);
+                                }
+                            });
+
+                        } catch (JSONException e) {
+                            Log.d(TAG, "onResponse: " + e);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d(TAG, "onError: " + anError);
+                    }
+                });
+    }
+
     public void getMovies(final OnMovieRequestCompleteListener listener) {
         Log.d(TAG, "GET MOVIE");
         AndroidNetworking.get("https://api.themoviedb.org/3/movie/popular")

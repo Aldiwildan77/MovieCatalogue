@@ -32,6 +32,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.onItemClickCallback = onItemClickCallback;
     }
 
+    public ArrayList<Movie> getMovieList(){
+        return this.movieList;
+    }
+
     public void setMovieList(ArrayList<Movie> movieList) {
         this.movieList = movieList;
     }
