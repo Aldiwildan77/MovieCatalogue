@@ -1,6 +1,9 @@
 package com.example.moviecatalogue.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -8,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +23,13 @@ import com.example.moviecatalogue.adapters.MovieAdapter;
 import com.example.moviecatalogue.interfaces.OnMovieRequestCompleteListener;
 import com.example.moviecatalogue.models.Movie;
 import com.example.moviecatalogue.services.ApiClient;
+import com.example.moviecatalogue.services.NotificationReceiver;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import static android.content.Context.ALARM_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 
 public class MovieFragment extends Fragment {
 
@@ -62,7 +71,7 @@ public class MovieFragment extends Fragment {
         });
     }
 
-    private void init(){
+    private void init() {
 
         OnMovieRequestCompleteListener listener = new OnMovieRequestCompleteListener() {
             @Override
