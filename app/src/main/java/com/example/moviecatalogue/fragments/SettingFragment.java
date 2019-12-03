@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -46,7 +47,14 @@ public class SettingFragment extends Fragment {
 
         reminder = Objects.requireNonNull(getActivity()).findViewById(R.id.sw_reminder);
         mPreferences = getActivity().getSharedPreferences(getActivity().getApplication().toString(), MODE_PRIVATE);
-        reminder.setChecked(mPreferences.getBoolean(KEY_REMINDER, DEFAULT_REMINDER));
+
+        boolean isReminderOn = mPreferences.getBoolean(SettingFragment.getKeyReminder(), SettingFragment.isDefaultReminder());
+        if (isReminderOn){
+            Toast.makeText(getActivity(), "REMINDEDR ON", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "REMINDEDR OFF", Toast.LENGTH_SHORT).show();
+        }
+        reminder.setChecked(isReminderOn);
 
         reminder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
