@@ -14,5 +14,6 @@
     <string name="image_container">Image Container</string>
     <string name="sw_reminder">Reminder</string>
     <string name="ic_setting">Setting</string>
+    <string name="ic_category">Movie Category</string>
 
 </resources>

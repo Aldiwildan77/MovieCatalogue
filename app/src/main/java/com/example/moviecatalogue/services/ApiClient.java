@@ -118,9 +118,9 @@ public class ApiClient {
                 });
     }
 
-    public void getMovies(final OnMovieRequestCompleteListener listener) {
+    public void getMovies(final OnMovieRequestCompleteListener listener, String category) {
         Log.d(TAG, "GET MOVIE");
-        AndroidNetworking.get("https://api.themoviedb.org/3/movie/popular")
+        AndroidNetworking.get("https://api.themoviedb.org/3/movie/" + category)
                 .addQueryParameter("api_key", MOVIE_API)
                 .addQueryParameter("language", "id")
                 .addQueryParameter("page", "1")

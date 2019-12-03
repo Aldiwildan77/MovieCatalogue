@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     FragmentTransaction settingFragmentTransaction;
+    MovieFragment movieFragment;
+    SettingFragment settingFragment;
 
 //    SharedPreferences mPrefences;
 //    boolean isReminderOn;
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        MovieFragment movieFragment = new MovieFragment();
+        movieFragment = new MovieFragment();
         fragmentTransaction.replace(R.id.frame_test, movieFragment);
         fragmentTransaction.commit();
     }
@@ -50,12 +52,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_item_setting) {
+
             settingFragmentTransaction = fragmentManager.beginTransaction();
-            SettingFragment settingFragment = new SettingFragment();
+            settingFragment = new SettingFragment();
 
             settingFragmentTransaction.replace(R.id.frame_test, settingFragment);
             settingFragmentTransaction.addToBackStack(null);
             settingFragmentTransaction.commit();
+            return true;
+
+        } else if (item.getItemId() == R.id.popular){
+            movieFragment.reloadMovie("popular");
+            return true;
+        } else if (item.getItemId() == R.id.top_rated){
+            movieFragment.reloadMovie("top_rated");
+            return true;
+        } else if (item.getItemId() == R.id.upcoming){
+            movieFragment.reloadMovie("upcoming");
+            return true;
+        } else if (item.getItemId() == R.id.now_playing){
+            movieFragment.reloadMovie("now_playing");
             return true;
         }
 

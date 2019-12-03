@@ -80,8 +80,8 @@ public class MovieFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 adapter.getMovieList().clear();
                 adapter.notifyDataSetChanged();
-                apiClient.searchMovie(listener, query.trim().toLowerCase());
                 progressCircular.setVisibility(View.VISIBLE);
+                apiClient.searchMovie(listener, query.trim().toLowerCase());
                 return true;
             }
 
@@ -93,9 +93,14 @@ public class MovieFragment extends Fragment {
     }
 
     private void init() {
+        apiClient.getMovies(listener, "popular");
+    }
 
-        apiClient.getMovies(listener);
-
+    public void reloadMovie(String category){
+        adapter.getMovieList().clear();
+        adapter.notifyDataSetChanged();
+        progressCircular.setVisibility(View.VISIBLE);
+        apiClient.getMovies(listener, category);
     }
 
 }
