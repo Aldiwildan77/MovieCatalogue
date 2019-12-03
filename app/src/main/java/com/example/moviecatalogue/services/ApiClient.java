@@ -123,7 +123,6 @@ public class ApiClient {
         AndroidNetworking.get("https://api.themoviedb.org/3/movie/" + category)
                 .addQueryParameter("api_key", MOVIE_API)
                 .addQueryParameter("language", "id")
-                .addQueryParameter("page", "1")
                 .setPriority(Priority.LOW)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
